@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import api from "./api";
@@ -6,11 +6,17 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import NewsPage from "./components/NewsPage";
 import { Routes, Route } from "react-router-dom";
-// import { ArticleProvider } from "./components/ArticleContext";
 
 const App = () => {
 	const [articles, setArticles] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const updateArticle = useCallback((updatedArticle) => {
+		setArticles((currentArticles) =>
+			currentArticles.map((article) =>
+				article.id === updatedArticle.id ? updatedArticle : article
+			)
+		);
+	}, []);
 
 	const fetchArticles = async () => {
 		try {
@@ -28,7 +34,7 @@ const App = () => {
 	}, []);
 
 	if (loading) {
-		return <div>Loading...</div>; // Or some loading spinner
+		return;
 	}
 	return (
 		<ThemeProvider theme={createTheme()}>
@@ -37,7 +43,12 @@ const App = () => {
 			<Routes>
 				<Route
 					path="/:slug"
-					element={<NewsPage articles={articles} />}
+					element={
+						<NewsPage
+							articles={articles}
+							updateArticle={updateArticle}
+						/>
+					}
 				/>
 				<Route path="/" element={<Home articles={articles} />} />
 			</Routes>

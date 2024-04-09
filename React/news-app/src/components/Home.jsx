@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-	Pagination,
-	Typography,
-	Grid,
-	Container,
-	Divider,
-	Box,
-} from "@mui/material";
+import { Pagination, Grid, Container, Divider, Box } from "@mui/material";
 import NewsCard from "./NewsCard";
 import SearchBar from "./SearchBar";
 import SortNavigation from "./SortNavigation";
 import { styled } from "@mui/system";
-// import { useArticles } from "./ArticleContext";
 
 const OutContainer = styled(Container)(({ theme }) => ({
 	backgroundColor: theme.palette.background.paper,

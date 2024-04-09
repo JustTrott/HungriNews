@@ -1,23 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import api from "../api";
 import { Container, Paper, Typography, Box, Divider } from "@mui/material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-// import { useArticles } from "./ArticleContext";
 
-function NewsPage({ articles }) {
-	// const articles = useArticles();
+function NewsPage({ articles, updateArticle }) {
 	const { slug } = useParams();
 	console.log(articles);
-	const article = articles.find((article) => article.slug === slug);
-	if (!article) {
-		return <div>Article not found</div>; // You can render a more sophisticated error component here
+	const [currentArticle, setCurrentArticle] = useState(null);
+	const [hasUpdatedViews, setHasUpdatedViews] = useState(false);
+	useEffect(() => {
+		const article = articles.find((article) => article.slug === slug);
+		if (article && !hasUpdatedViews) {
+			api.post(`/article/${article.id}`).then(() => {
+				api.get(`/article/${article.id}/views`).then((response) => {
+					const updatedArticle = {
+						...article,
+						views: response.data.views,
+					};
+					setCurrentArticle(updatedArticle);
+					updateArticle(updatedArticle);
+					setHasUpdatedViews(true);
+				});
+			});
+		}
+	}, [slug, articles, updateArticle, hasUpdatedViews]);
+
+	if (!currentArticle) {
+		return;
 	}
+
 	return (
 		<Container maxWidth="md" sx={{ mt: 8, mb: 6 }}>
 			<Paper elevation={1}>
 				<Box p={2} px={4}>
 					<Typography variant="body1">
-						{new Date(article.date).toLocaleString("ru-RU", {
+						{new Date(currentArticle.date).toLocaleString("ru-RU", {
 							year: "numeric",
 							month: "long",
 							day: "numeric",
@@ -26,7 +44,7 @@ function NewsPage({ articles }) {
 						})}
 					</Typography>
 					<Typography variant="h2" gutterBottom>
-						{article.title}
+						{currentArticle.title}
 					</Typography>
 					<Box
 						display={"flex"}
@@ -39,7 +57,7 @@ function NewsPage({ articles }) {
 								sx={{ mr: "0.5rem" }}
 							/>
 							<Typography variant="body2">
-								{article.views}
+								{currentArticle.views}
 							</Typography>
 						</Box>
 					</Box>
@@ -47,13 +65,22 @@ function NewsPage({ articles }) {
 						<Box
 							component={"img"}
 							sx={{ width: "100%" }}
-							src={article.image}
-							alt={article.slug}
+							src={currentArticle.image}
+							alt={currentArticle.slug}
 						/>
 					</Box>
-					<Typography variant="h6">{article.description}</Typography>
+					<Typography variant="h6">
+						{currentArticle.description}
+					</Typography>
 					<Divider />
-					<Typography variant="body1">{article.body}</Typography>
+					<Typography variant="body1">
+						{currentArticle.body.split("\n").map((text, index) => (
+							<React.Fragment key={index}>
+								{text}
+								<br />
+							</React.Fragment>
+						))}
+					</Typography>
 				</Box>
 			</Paper>
 		</Container>

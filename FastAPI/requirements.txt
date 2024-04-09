@@ -1,0 +1,8 @@
+APScheduler==3.10.4
+beautifulsoup4==4.12.3
+dateparser==1.2.0
+fastapi==0.110.1
+pydantic==2.6.4
+python-slugify==8.0.4
+Requests==2.31.0
+SQLAlchemy==2.0.29
