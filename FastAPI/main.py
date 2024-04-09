@@ -76,7 +76,7 @@ scheduler = AsyncIOScheduler()
 async def startup_event():
     job = scheduler.add_job(
         check_and_post_articles,
-        trigger=IntervalTrigger(minutes=5)
+        trigger=IntervalTrigger(seconds=30)
     )
     
     await job.func(*job.args, **job.kwargs)

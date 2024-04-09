@@ -6,7 +6,6 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
 function NewsPage({ articles, updateArticle }) {
 	const { slug } = useParams();
-	console.log(articles);
 	const [currentArticle, setCurrentArticle] = useState(null);
 	const [hasUpdatedViews, setHasUpdatedViews] = useState(false);
 	useEffect(() => {
