@@ -7,9 +7,8 @@ import models
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
-from fetch_articles import fetch_articles_from_page, fetch_article_details  # Assuming your fetching script is named fetch_articles.py
+from fetch_articles import fetch_articles_from_page, fetch_article_details
 from contextlib import contextmanager
-from datetime import datetime, timedelta
 
 app = FastAPI()
 
@@ -54,15 +53,12 @@ def get_db_session():
         db.close()
 
 async def check_and_post_articles():
-    # Use the session directly within the context manager
     with get_db_session() as db:
         page_number = 1
         articles = fetch_articles_from_page(page_number)
         for article, link in articles:
-            # Check if article already exists
             exists = db.query(models.Article).filter(models.Article.title == article['title']).first() is not None
             if not exists:
-                # Logic to insert a new article into the database
                 article = fetch_article_details(article, link)
                 new_article = models.Article(**article)
                 db.add(new_article)
@@ -74,9 +70,8 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 models.Base.metadata.create_all(bind=engine)
 
-# Set up the scheduler
 scheduler = AsyncIOScheduler()
-# scheduler.start()
+
 @app.on_event("startup")
 async def startup_event():
     job = scheduler.add_job(
@@ -84,11 +79,9 @@ async def startup_event():
         trigger=IntervalTrigger(minutes=5)
     )
     
-    # Run the job immediately as well
     await job.func(*job.args, **job.kwargs)
 
     scheduler.start()
-    print("Scheduler started, first job execution triggered immediately.")
 
 @app.on_event("shutdown")
 def shutdown_event():

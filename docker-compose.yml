@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+    fastapi:
+        build:
+            context: ./FastAPI
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./FastAPI:/app
+        command: uvicorn main:app --host 0.0.0.0 --reload
+
+    react:
+        build:
+            context: ./React/news-app
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./React/news-app/src:/app/src
+        stdin_open: true
+        tty: true
