@@ -1,5 +1,7 @@
 # Hungri NEWS
 
+## UPD: Сайт доступен на http://152.70.63.192:3000/
+
 ## Описание
 
 "Клон" сайта Tengrinews в стиле Material-UI. Написан на FastAPI + React.js
