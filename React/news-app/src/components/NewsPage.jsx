@@ -11,21 +11,23 @@ function NewsPage({ articles, updateArticle }) {
 	useEffect(() => {
 		const article = articles.find((article) => article.slug === slug);
 		if (article && !hasUpdatedViews) {
-			api.post(`/article/${article.id}`).then(() => {
-				api.get(`/article/${article.id}/views`).then((response) => {
-					const updatedArticle = {
-						...article,
-						views: response.data.views,
-					};
-					setCurrentArticle(updatedArticle);
-					updateArticle(updatedArticle);
-					setHasUpdatedViews(true);
-				});
+			api.post(`/add-view/${article.id}`).then((response) => {
+				const updatedArticle = {
+					...article,
+					views: response.data,
+				};
+				setCurrentArticle(updatedArticle);
+				updateArticle(updatedArticle);
+				setHasUpdatedViews(true);
 			});
 		}
 	}, [slug, articles, updateArticle, hasUpdatedViews]);
 
 	if (!currentArticle) {
+		const tempArticle = articles.find((article) => article.slug === slug);
+		if (tempArticle) {
+			setCurrentArticle({ ...tempArticle, views: tempArticle.views + 1 });
+		}
 		return;
 	}
 

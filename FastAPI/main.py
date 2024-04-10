@@ -100,7 +100,7 @@ async def create_article(article: ArticleBase, db: db_dependency):
 async def read_articles(db: db_dependency):
     return db.query(models.Article).all()
 
-@app.post("/article/{article_id}", response_model=ArticleModel)
+@app.post("/add-view/{article_id}", response_model=int)
 async def increment_article_views(article_id: str, db: db_dependency):
     db_article = db.query(models.Article).filter(models.Article.id == article_id).first()
     if db_article is None:
@@ -108,11 +108,4 @@ async def increment_article_views(article_id: str, db: db_dependency):
     db_article.views += 1
     db.commit()
     db.refresh(db_article)
-    return db_article
-
-@app.get("/article/{article_id}/views", response_model=dict)
-async def get_article_views(article_id: str, db: db_dependency):
-    db_article = db.query(models.Article).filter(models.Article.id == article_id).first()
-    if db_article is None:
-        raise HTTPException(status_code=404, detail="Article not found")
-    return {"views": db_article.views}
+    return db_article.views
