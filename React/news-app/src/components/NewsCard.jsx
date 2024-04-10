@@ -6,9 +6,10 @@ import {
 	CardActions,
 	CardContent,
 	Box,
+	Link,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -34,7 +35,7 @@ function NewsCard({ article }) {
 	return (
 		<Card>
 			<ImageButton
-				component={Link}
+				component={RouterLink}
 				to={article.slug}
 				focusRipple
 				key={article.title}
@@ -47,9 +48,16 @@ function NewsCard({ article }) {
 				/>
 			</ImageButton>
 			<CardContent sx={{ pb: 0 }}>
-				<Typography variant="h5" gutterBottom>
-					{article.title}
-				</Typography>
+				<Link
+					component={RouterLink}
+					to={`/${article.slug}`}
+					sx={{ textDecoration: "none" }}
+					color="inherit"
+				>
+					<Typography variant="h5" gutterBottom>
+						{article.title}
+					</Typography>
+				</Link>
 			</CardContent>
 			<CardActions sx={{ mb: 1, ml: 1 }}>
 				<Typography variant="caption">
