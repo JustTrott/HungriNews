@@ -22,7 +22,7 @@ The installation process is very simple. You need to:
 3. In the root folder of the repository, run the command:
    ```bash
    sudo docker compose --build
-
+   ```
 
 After both servers have started, you will need to wait a bit for the articles to finish parsing.
 
