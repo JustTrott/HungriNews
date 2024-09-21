@@ -1,33 +1,29 @@
 # Hungri NEWS
 
-## UPD: Сайт доступен на http://152.70.63.192:3000/
+## Description
 
-## Описание
+A "clone" of the Tengrinews website in the Material-UI style. Written with FastAPI + React.js.
 
-"Клон" сайта Tengrinews в стиле Material-UI. Написан на FastAPI + React.js
+## Development Process
 
-## Процесс разработки
+It was decided to implement the backend in Python using FastAPI and the frontend in React.js. The reason for choosing these frameworks is simple: they are the ones I have the most experience with.
 
-После ознакомления с заданием, Было решено реализовать бэкенд на Python используя FastAPI и фронтенд на React.js. Причина выбора фреймворка проста: больше всего опыта имеется именно с ними.
+Due to my limited full-stack experience, a few issues arose, leading to some compromises:
 
-В связи с небольшим опытом работы в Fullstack, возникло несколько проблем и, как следствие, компромиссов:
+- The view counter during parsing did not register since it updates dynamically, so a random value between 1 and 1000 was selected. However, the counter's update mechanism was implemented (persistently).
+- Categories for articles were not implemented.
 
--   счетчик просмотров при парсинге не считывался, т.к. он обновляется динамически, поэтому выбиралось случайное значение от 1 до 1000. Однако обновление счетчика реализовано (персистентно)
--   не реализованы категории статей
+## Installation
 
-## Установка
+The installation process is very simple. You need to:
 
-Установка очень простая, необходимо
+1. Clone the repository (download it).
+2. Install Docker and the Docker Compose extension.
+3. In the root folder of the repository, run the command:
+   ```bash
+   sudo docker compose --build
 
-Клонировать репозиторий (скачать)
-Установить Docker и расширение Docker Compose
-в корневой папке репозитория прописать команду
-sudo docker compose --build
 
-После того, как оба сервера запустятся нужно будет немного подождать, перед тем, как статьи закончат парситься
+After both servers have started, you will need to wait a bit for the articles to finish parsing.
 
-Сайт будет доступен на http://localhost:3000, Бэкенд API на http://localhost:8000/docs
-
-## Почему сдал после дедлайна?
-
-Скажу сразу, что это полностью моя вина. У меня выпало 3 дедлайна на 9 апреля: задание по структурам данных (вышло 1000+ строк кода на C++), задание по аналитике данных и задание в nfactorial. Все задания отправили за 5-7 до дедлайнов и на каждый из них ушло около двух дней. Я мог бы сдать их быстрее, но тогда работы вышли бы совсем печальные, и в итоге, исключительно по моей вине (поздно начал), 2 из 3 заданий я просрочил, включая это задание. Прошу прощения и прошу, тем не менее, оценить мою работу. Насчёт хостинга, я поднял его полностью сам, на VPS, а не использовал готовый сервис (может это даст какие-то бонус поинты). Спасибо за внимание и, надеюсь, что я смогу принять участие в инкубаторе этим летом!
+The website will be available at http://localhost:3000, and the backend API will be available at http://localhost:8000/docs.
